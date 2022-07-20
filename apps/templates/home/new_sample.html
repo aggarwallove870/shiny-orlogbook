@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/custom.css">
+    <title> OR LOGBOOK</title>
+    <style>
+   .main_body_section {
+    background: #1e1e2f;
+    }
+    .performance-bg{
+     background: #27293d;
+     } 
+   .top_header {
+    text-align: center;
+    }
+     .top_header button{
+        background-color: #263148 !important;
+        transform: translateY(1px) !important;
+        transition: all .15s ease;
+        padding: 8px 30px;
+        border-radius: 8px;
+        border:none;
+        color: #525f7f;
+        font-weight: 700;
+     }
+     .top_header button:focus{
+         box-shadow: 0px 0px 0px transparent !important;
+     }
+     .django_bg_sidebar{
+        background: #ba54f5;
+        background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+        border-radius: 0.2857rem;
+        height: 100vh;
+        padding: 15px;
+        position: fixed;
+        width: 230px;
+        overflow: hidden;
+        transition: 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
+        transition-property: top,bottom, width;
+        transition-duration: .2s,.2s, .35s;
+        transition-timing-function: linear,linear,ease;
+     }
+     .bg_main_cntnt{
+        padding: 15px;
+        background: #27293d;
+        border: 0;
+        position: relative;
+        width: 100%;
+        box-shadow: 0 1px 20px 0px rgb(0 0 0 / 10%);
+        border-radius: 0.2857rem;
+        height: 100%;
+        }
+       .main_popup_mdl .modal-footer{
+           border-top:none; 
+        }
+        .main_popup_mdl .modal-header{
+            border-bottom:none; 
+        }
+        .main_popup_mdl .modal-footer button{
+            background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+            border-color: #ba54f5;
+            margin: 0 auto;
+            width: 100px;
+            padding: 8px 80px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main_popup_mdl .modal-footer button:focus{
+            box-shadow: 0px 0px 0px transparent !important;
+        }
+        .django_bg_sidebar h3 a{
+            color: #fff;
+            text-decoration: none;
+            padding-right: 10px;
+        }
+        .django_bg_sidebar h3 {
+            font-size: 16px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            padding-left: 15px;
+            padding-top: 4px;
+        }
+        .django_bg_sidebar h3:after{
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 15px;
+            height: 1px;
+            width: calc(100% - 30px);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .django_bg_sidebar ul{
+            padding-left: 15px;
+        }
+        .django_bg_sidebar ul li{
+            list-style: none;
+            color: #fff;
+        }
+        .django_bg_sidebar ul li a{
+            color: #fff;
+            text-decoration: none;
+            display: flex; 
+            align-items: center;
+            padding-bottom: 40px; 
+        }
+        .django_bg_sidebar ul li a i{
+        padding-right: 20px;
+        }
+        .django_bg_sidebar ul li a p{
+        margin-bottom: 0px;  
+        font-size: 0.62475rem;
+        text-transform: uppercase;
+        font-weight: 300;  
+        font-family: "Poppins", sans-serif;
+        }
+        .file-upload {
+        background-color: #ffffff;
+        width: 100%;
+        margin: 0 auto;
+        padding:20px 20px 0px 20px;
+        }
+        .main_popup_mdl .modal-content{
+        padding-bottom: 30px;   
+        }
+        .file-upload-btn {
+        width: 100%;
+        margin: 0;
+        color: #fff;
+        background:#767676;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        transition: all .2s ease;
+        outline: none;
+        text-transform: uppercase;
+        font-weight: 700;
+        }
+
+        .file-upload-btn:hover {
+        background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+        color: #ffffff;
+        transition: all .2s ease;
+        cursor: pointer;
+        }
+
+        .file-upload-btn:active {
+        border: 0;
+        transition: all .2s ease;
+        }
+
+        .file-upload-content {
+        display: none;
+        text-align: center;
+        }
+
+        .file-upload-input {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        opacity: 0;
+        cursor: pointer;
+        }
+
+        .image-upload-wrap {
+        margin-top: 20px;
+        border: 4px dashed #e7e7e7;
+        position: relative;
+        }
+
+        .image-dropping,
+        .image-upload-wrap:hover {
+        background-color: #f2f2f2;
+        border: 4px dashed #ffffff;
+        }
+
+        .image-title-wrap {
+        padding: 0 15px 15px 15px;
+        color: #222;
+        }
+
+        .drag-text {
+        text-align: center;
+        }
+
+        .drag-text h3 {
+        font-weight: 100;
+        text-transform: uppercase;
+        color: #9d9d9d;
+        padding: 30px 0;
+        font-size: 16px;
+        }
+
+        .file-upload-image {
+        max-height: 200px;
+        max-width: 200px;
+        margin: auto;
+        padding: 20px;
+        }
+
+        .remove-image {
+        width: 200px;
+        margin: 0;
+        color: #fff;
+        background: #cd4535;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+        border-bottom: 4px solid #b02818;
+        transition: all .2s ease;
+        outline: none;
+        text-transform: uppercase;
+        font-weight: 700;
+        }
+
+        .remove-image:hover {
+        background: #c13b2a;
+        color: #ffffff;
+        transition: all .2s ease;
+        cursor: pointer;
+        }
+
+        .remove-image:active {
+        border: 0;
+        transition: all .2s ease;
+        }
+        div#exampleModal {
+        padding: 0px;
+        }
+        .nav_video_photo{
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        vertical-align: middle;
+        overflow: hidden;    
+        }
+        .nav_video_photo img{
+        background-position: top;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;    
+        }
+        .lg_in_out ul.dropdown-menu.show{
+        left: -150%;
+        }
+        .lg_in_out a#navbarDropdown {
+        color: #fff;
+        }
+        .lg_in_out a.dropdown-item {
+        font-size: 0.75rem;
+        padding-top: 0.6rem;
+        padding-bottom: 0.6rem;
+        margin-top: 5px;
+        transition: all 150ms linear;
+        }
+        nav.navbar.navbar-expand-lg.lg_in_out {
+        float: right;
+        width: 100%;
+        text-align: right;
+        }
+        .lg_in_out .navbar-toggler{
+        border: 1px solid #fff;
+        }
+        .multipleSelection:focus-visible{
+        outline: none;
+        }
+         /*----Start latest css----*/
+         .drp_dwn_btm button{
+        margin-bottom: 20px;
+        padding: 9px 50px;  
+        background: linear-gradient(0deg, #27293d 0%, #1c1d2b 100%);
+        border: 1px solid #27293d;
+        }
+        .drp_dwn_btm button:focus{  
+        border-color: #ba54f5;  
+        box-shadow: 0px 0px 0px 0.25rem transparent !important;  
+        }
+        .bg_mbl_sectn{
+        background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+        margin-bottom: 10px;
+        }
+        .bg_mbl_sectn button{
+        background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+        }
+       .rygt_side_bar select {
+       float: right;
+       padding: 8px 10px;
+       background: linear-gradient(0deg, #27293d 0%, #1c1d2b 100%);
+       border: 2px solid #27293d;
+       color: #959595;
+       font-weight: 600; 
+       }
+       /*----Start Select Box----*/
+       
+       .multipleSelection {
+        width: 170px;
+        background-color: #fff;
+        border-radius: 4px;
+        position: absolute;
+        right: 50px;
+        z-index: 999;
+       }
+      .selectBox {
+        position: relative;
+        }
+        .selectBox select {
+        width: 100%;
+        font-weight: 400;
+        border-radius: 3px;
+        }
+        .selectBox select:focus-visible{
+        outline: none; 
+        }
+        .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        }
+        #checkBoxes {
+        display: none;
+        }
+        #checkBoxes label {
+        display: flex;
+        padding: 0px 3px;
+        font-size: 13px;
+        align-items: center;
+        padding-bottom: 2px;
+        }
+        #checkBoxes label input{
+        margin-right: 2px;  
+        }
+        #checkBoxes label:hover {
+        background-color: #d9d9d9;
+        }
+    
+        .rygt_side_bar p{
+        color:#fff;
+        margin-bottom: 0px;
+        text-align: right; 
+        padding-top: 10px;
+        }
+        .filter-section{
+        width: 100%;
+        height: 100%;  
+        }
+       /*----End Select Box------*/
+        @media screen and (max-width: 1300px){
+        .col-md-8.drp_dwn_btm {
+        width: 50%;
+        } 
+        }
+        @media only screen and (max-width: 1200px) {
+        .django_bg_sidebar{
+        width: 170px;
+        } 
+        .top_header button{
+        padding: 8px 20px;   
+        font-size: 13px;  
+        }
+        }
+        @media only screen and (max-width: 992px) {
+        .lg_in_out {
+         float: right;
+        }
+        .lg_in_out .container-fluid {
+        display: block !IMPORTANT;
+        float: right;
+        }
+        .lg_in_out i{
+        color: #fff;    
+        }
+        .lg_in_out #navbarSupportedContent{
+        width: 100%;
+        position: absolute;
+        height: 100%;
+        background: #fff;
+        z-index: 999;
+        right: 0px;
+        }
+        .lg_in_out a#navbarDropdown{
+        text-align: left;
+        padding-left: 15px;
+        color: #000;   
+        }
+        .lg_in_out ul.dropdown-menu.show{
+        margin: 0px;
+        width: 100%;
+        border-radius: 0px;
+        border: none; 
+        left: 0px;   
+        }
+        .lg_in_out .navbar-nav{
+        background: #fff;
+        padding: 10px 0px 10px 50px;    
+        }
+        .drp_dwn_btm {
+        width: 50%;
+        }
+        }
+        @media only screen and (max-width: 768px) {
+        .drag-text h3{
+        font-size: 13px;     
+        }   
+        .main_popup_mdl .modal-footer button{
+        font-size: 14px;    
+        } 
+        .file-upload-btn{
+        font-size: 14px;    
+        }
+        .lg_in_out .navbar-nav{
+        padding: 10px 0px 10px 10px;   
+        }
+        .multipleSelection {
+        width: 180px !important;
+        }
+        .selectBox select{
+        font-size: 13px;  
+        }
+        .rygt_side_bar p{
+        text-align: left !important;  
+        }
+        .multipleSelection{
+        left: unset;
+        right: unset !important;
+        }
+        .filter_left{
+        width: 10%;  
+        }
+        .filter_right{
+        width: 90%;  
+        }
+        .filter-section{
+        margin-bottom: 20px;  
+        }
+        }
+        @media only screen and (max-width: 480px) {
+        .filter_left{
+        width: 20%;  
+        }
+        .filter_right{
+        width: 80%;  
+        }
+        }
+        /*-----End latest css------*/
+    </style>
+    <script>
+        function w3_open() {
+           document.getElementById("mySidebar").style.display = "block";
+        }
+    
+        function w3_close() {
+          document.getElementById("mySidebar").style.display = "none";
+        }
+    </script>
+</head>
+<body class="main_body_section"> 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<div class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-md-2 top_header">
+        </div>
+        <div class="col-md-10">
+            <nav class="navbar navbar-expand-lg lg_in_out">
+                <div class="container-fluid">
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                           <div class="nav_video_photo">
+                              <img src="/static/assets/img/anime3.png" alt="Profile Photo">
+                           </div>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="#">Profile</a></li>
+                          <li class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
+                        </ul>
+                      </li>
+                  </div>
+                </div>
+              </nav>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row mt-1 mb-5">
+        <div class="col-md-2">
+            <div class="django_bg_sidebar w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" id="mySidebar" style="width:200px;">
+              <button class="w3-bar-item w3-button w3-large w3-hide-large" onclick="w3_close()">Close &times;</button>
+              <h3><a href="#">OR Logbook</a> </h3>
+            <ul>
+                <li class="active ">
+                    <a href="#">
+                      <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                      <p>Dashboard</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-user-o" aria-hidden="true"></i>
+                      <p>User Profile</p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      <i class="fa fa-sign-out" aria-hidden="true"></i>
+                      <p>Logout</p>
+                    </a>
+                  </li>
+            </ul>
+        </div>
+        <div class="w3-main" style="margin-left:200px">
+        <div class="w3-teal bg_mbl_sectn">
+          <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">&#9776;</button>
+        </div>
+        </div>
+    </div>
+        <div class="col-md-10">
+            <!--Start Drop Down menu-->
+            <div class="row">
+                <div class="col-md-8 drp_dwn_btm">
+
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                         User List
+                        </button>
+                        <ul class="dropdown-menu">
+                          {% for u in users %}
+
+                          <li><a class="dropdown-item abc" href="#"  id="{{u.id}}">{{ u.username }}</a></li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      
+                    </div>
+                    <div class="col-md-4 rygt_side_bar">
+                      <form>
+                        <div class="row filter-section">
+                          <div class="col-md-6 filter_left">
+                           <p>Filter</p>
+                           </div>
+                           <div class="col-md-6 filter_right">
+                        <div class="multipleSelection">
+                          
+                            <div class="selectBox" 
+                                onclick="showCheckboxes()">
+                                <select>
+                                    <option>Select options</option>
+                                </select>
+                                <div class="overSelect"></div>
+                            </div>
+                  
+                            <div id="checkBoxes">
+                                <label for="first">
+                                    <input type="checkbox" id="first" />
+                                    checkBox1
+                                </label>
+                                  
+                                <label for="second">
+                                    <input type="checkbox" id="second" />
+                                    checkBox2
+                                </label>
+                                <label for="third">
+                                    <input type="checkbox" id="third" />
+                                    checkBox3
+                                </label>
+                                <label for="fourth">
+                                    <input type="checkbox" id="fourth" />
+                                    checkBox4
+                                </label>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+              
+               
+             <!--End Drop Down menu-->
+             <div class="row mb-4">
+              <div class="col-md-6">
+                <div id="container"  class="bg_main_cntnt">
+                  <canvas id="Role-bar-chart"></canvas>
+                </div>
+               </div>
+               <div class="col-md-6">        
+                <div id="container" class="bg_main_cntnt">
+                  <canvas id="Specialty-bar-chart"></canvas>
+                </div>
+               </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <div id="container" class="bg_main_cntnt">      
+                        <canvas id="Role-pie-chart"></canvas>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="bg_main_cntnt">
+                    <div id="container" class="bg_main_cntnt">
+                      <canvas id="Site-bar-chart"></canvas>
+                    </div>
+                  </div>
+               </div>
+          </div>
+          <div class="row mt-4">
+              <div class="col-md-12">
+                  <div class="bg_main_cntnt">
+                    <div id="container" class="bg_main_cntnt">
+                      <canvas id="Site-bar-chart"></canvas>
+                    </div>  
+                </div>
+              </div>
+          </div>
+
+           
+  </div>
+</div>
+
+<script> 
+//checbox start
+//checbox start    
+ var show = true;
+  function showCheckboxes() {
+      var checkboxes = 
+          document.getElementById("checkBoxes");
+
+      if (show) {
+          checkboxes.style.display = "block";
+          show = false;
+      } else {
+          checkboxes.style.display = "none";
+          show = true;
+      }
+  }
+//checkbox end
+//checkbox end
+$(document).ready(function(){
+  $(".abc").click(function()
+  {
+      var id = $(this).attr('id');
+      console.log(id);
+      $.ajax({
+          url: '{% url "generate_bar_chart" %}',
+          type: 'GET',
+          data: {
+              'id': id,
+              'is_admin': true
+          },
+          success: function(data) {                    
+              generate_bar_chart(data);
+              
+          }
+      });
+  });
+  function generate_bar_chart(data) {
+      const {keys, values} = data;
+      console.log(data);
+      bar_ctx = document.getElementById('Role-bar-chart');
+      bar_data = make_chart_config(keys, values, 'horizontalBar');
+      var myBarChart = new Chart(bar_ctx, bar_data);
+
+      pie_ctx = document.getElementById('Role-pie-chart');
+      pie_data = make_chart_config(keys, values, 'pie');
+      var myPieChart = new Chart(pie_ctx, pie_data);
+
+      const {keys1, values1} = data;
+      specialty_ctx = document.getElementById('Specialty-bar-chart');
+      specialty_data = make_chart_config(keys1, values1, 'horizontalBar');
+      var mySpecialtyChart = new Chart(specialty_ctx, specialty_data);
+
+      const {keys2, values2} = data;
+      site_ctx = document.getElementById('Site-bar-chart');
+      site_data = make_chart_config(keys2, values2, 'horizontalBar');
+      var mySiteChart = new Chart(site_ctx, site_data);
+
+  };
+
+  function make_chart_config(keys,values,chart_type){
+
+     return {
+          type: chart_type,
+          data: {
+              datasets: [{
+                  
+                  data: values,
+                  backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+                  hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5", "#616774"]
+
+              }],
+              labels: keys
+          },
+          options: {
+              responsive: true
+          },
+
+      };
+
+  }
+});
+</script>
+</body>
+</html>

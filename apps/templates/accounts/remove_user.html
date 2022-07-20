@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/static/assets/css/style.css">
+    <title>OR LOGBOOK</title>
+   <style>
+    .down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+    .drop{
+        padding: 10px 10px;
+        margin-left: -1px;
+        border: 1px solid ;
+        align-items: center;
+    }
+    label.color_change {
+          color: white;
+          font-size: 12px;
+          padding-top: 7px;
+      }
+      .django_bg_sidebar [type=checkbox]{
+      width: 11px;
+      position: relative;
+      top: 2px;
+      }
+    </style>
+   
+</head>
+<body class="main_body_section"> 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <div class="container-fluid mobile-section-header">
+    <div class="row">
+      <div class="col-md-2 col-xs-2 side_bar_mbl">
+        <div class="django_bg_sidebar w3-sidebar w3-bar-block w3-collapse w3-card w3-animate-left" id="mySidebar">
+          <button class="w3-bar-item w3-button w3-large w3-hide-large cross_btn" onclick="w3_close()"> ×</button>
+          <h3><a href="#">OR Logbook</a> </h3>
+        <ul>
+            <li class="active ">
+                <a href="{% url 'generate_bar_chart' %}">
+                  <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'Procedure' %}">
+                  <i class="fa fa-bars"></i>
+                  <p>Procedures</p>
+                </a>
+              </li>
+              {%if not request.user.is_superuser%}
+              <li>
+                <a href="{% url 'UserProfile' %}">
+                  <i class="fa fa-user-o" aria-hidden="true"></i>
+                  <p>User Profile</p>
+                </a>
+              </li>
+              {%endif%}
+
+
+              <li>
+                <a href="{% url 'logout' %}">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  <p>Logout</p>
+                </a>
+              </li>
+        </ul>
+          <!---Start Sidebar User-->
+          <div class="d-flex align-items-start orlog_book_sidebar">
+            <div class="nav flex-column side_bar_tabs" id="v-pills-tab">
+              <ul>
+                  <li><a href="{% url 'supervisor' %}"><i class="fa fa-plus"></i>Add Supervisor</a></li>
+                  <li><a href="{% url 'institute' %}"><i class="fa fa-building"></i>Add Institute</a></li>
+                  <li><a href="{% url 'user' %}"><i class="fa fa-user"></i>Add User</a></li>
+              </ul>  
+            </div>
+          </div>
+          <!-- <div class="user_profile_section">
+            <ul>
+              <li><a href="{% url 'UserProfile' %}"><i class="fa fa-user"></i>User Profile</a></li>
+          </ul>
+          </div> -->
+          <!----End Sidebar User--->
+          <select class="form-select select_box_sidebar fg country" aria-label="Default select example">
+            <!-- main screen -->
+         <option selected>Select Filter</option>
+         <option value="Staff">Staff</option>
+         <option value="Sub-Specialty">Sub-Specialty</option>
+         <option value="Location">Location</option>
+         <option value="Role">Role</option>
+         <option value="PGY">PGY</option>
+           </select>
+           <form method="post" action="">
+            {% csrf_token %}
+          <div class="get_location get_scroll">
+          {% for i in get_location%}
+          <input type="checkbox" id="get_location" name="Location" value='{{i}}'>
+          <label for="vehicle1" class="color_change"> {{i}}</label><br>
+          {%endfor%}
+          <div class="btn_select_sbmt">
+            <input type="submit" value="Submit">
+            </div>
+        </div>
+
+                 <div class="sub_specialty get_scroll">
+          {% for i in get_sub_specialty%}
+          <input type="checkbox" id="sub_specialty" name="Sub-Specialty" value='{{i}}'>
+          <label for="vehicle1" class="color_change"> {{i}}</label><br>
+          {%endfor%}
+          <input type="submit" value="Submit"></div>
+        
+
+          <div class="get_role_data get_scroll">
+          {% for i in get_role_data %}
+          <input type="checkbox" id="get_role_data" name="Role" value='{{i}}'>
+          <label for="vehicle1" class="color_change"> {{i}}</label><br>
+          {%endfor%}
+          <input type="submit" value="Submit">
+        </div>
+
+          <div class="get_staff get_scroll">
+          {% for i in get_staff %}
+          <input type="checkbox" id="myCheckBoxID" name="Staff" value='{{i}}'>
+          <label for="vehicle1" class="color_change"> {{i}}</label><br>
+          {%endfor%}
+          <input type="submit" value="Submit">
+        </div>
+       
+      
+
+        
+        <div class="get_pgy get_scroll">
+        
+        {% for i in get_pgy %}
+        
+        <input type="checkbox" id="myCheckBoxID" name="PGY" value={{i}}>
+        
+        <label for="vehicle1" class="color_change"> {{i}}</label><br>
+        
+        {%endfor%}
+        
+        <input type="submit" value="Submit">
+
+        </div>     
+        </form>
+        
+    </div>
+    <div class="w3-main" style="margin-left:200px">
+    <div class="w3-teal bg_mbl_sectn">
+      <button class="w3-button w3-teal w3-xlarge w3-hide-large" onclick="w3_open()">☰</button>
+    </div>
+    </div>
+  </div>
+  
+  <div class="col-md-9  col-xs-9 top_header side_br_mbl_cntr">
+    {% if not request.user.is_superuser  and not request.user.is_supervisor %}
+<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+Upload Excel File
+
+</button>
+
+{%endif%}
+<div class="user_cntain mobile_conatin_user"> {% if request.user.is_superuser or request.user.is_supervisor %} <form method="GET"> <div class="usr_list"> <select class="form-select" aria-label="Default select example" name="user_id"> <option selected>User List</option> {% for u in users %} <option value="{{u.id}}" {% if u.id == request.GET.user_id %} selected {%endif%} name="checks" >{{ u.username }}</option> {% endfor %} <input type="hidden" value="is_admin"> </select> </div> <div class="usr_btn"> <input type="submit"> </div> </form> {%endif%} </div>
+  </div>
+  <div class="col-md-1  col-xs-1 side_bar_rygt_mbl">
+    <nav class="navbar navbar-expand-lg lg_in_out">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="nav_video_photo">
+                    {%if request.user.profile_photo%}
+                    <img src="{{request.user.profile_photo.url}}" alt="Profile Photo">
+                    {%elif request.user.is_superuser%}
+                    <img src="/profile_pic" alt="Profile Photo">
+                    {%elif request.user.is_supervisor%}
+                    <img src="/profile_pic" alt="Profile Photo">
+                    {%else%}
+                    <div class="text-center align-center a"  style="background: #f9fafb; height: 100px;">
+                      <p style="padding-top: 3px;  font-size: 15px;" >{{ request.user.first_name.0 }}{{ request.user.last_name.0 }}</p>
+                  </div>
+                    {%endif%}
+                   </div>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
+                </ul>
+              </li>
+          </ul></div>
+        </div>
+      </nav>
+  </div>
+    </div>
+  </div>
+  <div class="container-fluid desktop-section-section">
+      <div class="row mt-3">
+          <div class="col-md-2 top_header">
+            {% if not request.user.is_superuser  and not request.user.is_supervisor %}
+
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            
+            Upload Excel File
+            
+            </button>
+            
+            {%endif%}
+          </div>
+          <div class="col-md-10">
+              <nav class="navbar navbar-expand-lg lg_in_out">
+                  <div class="container-fluid">
+                  
+<!--                     
+                    <div class="user_cntain">
+                      {% if request.user.is_superuser or request.user.is_supervisor %}
+            
+                    <form method="GET">
+                      <div class="usr_list">
+                    <select class="form-select" aria-label="Default select example" name="user_id">
+                      <option selected>User List</option>
+                      {% for u in users %}
+                      <option value="{{u.id}}" {% if u.id == request.GET.user_id %} selected {%endif%} name="checks" >{{ u.username }}</option>
+                      {% endfor %}
+                      <input type="hidden" value="is_admin">
+                    </select>
+                    </div>
+                    <div class="usr_btn">
+                    <input type="submit">
+                    </div>
+                  </form>
+                   {%endif%}
+                  </div> -->
+                   
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <i class="fa fa-bars"></i>
+                    </button>
+                    {% if messages %}
+  
+                    {% for message in messages %}
+                    
+                    <div id="myElem" class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+                    
+                    {% endfor %}
+                    
+                    {% endif %}
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="nav_video_photo">
+                              {%if request.user.profile_photo%}
+                              <img src="{{request.user.profile_photo.url}}" alt="Profile Photo">
+                              {%elif request.user.is_superuser%}
+                              <img src="/profile_pic" alt="Profile Photo">
+                              {%elif request.user.is_supervisor%}
+                              <img src="/profile_pic" alt="Profile Photo">
+                              {%else%}
+                              <div class="text-center align-center a"  style="background: #f9fafb; height: 100px;">
+                                <p style="padding-top: 3px;  font-size: 15px;" >{{ request.user.first_name.0 }}{{ request.user.last_name.0 }}</p>
+                            </div>
+                              {%endif%}
+                             </div>
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+           
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                          </ul>
+                        </li>
+                    </div>
+                  </div>
+                </nav>
+          </div>
+      </div>
+  </div>
+  <div class="container-fluid">
+      <div class="row mt-1 mb-5 tablet_section">
+          <div class="col-md-2 desktop-section-section">
+              <div class="django_bg_sidebar">
+                <h3><a href="#">OR Logbook</a> </h3>
+              <ul>
+                  <li class="active ">
+                      <a href="{% url 'generate_bar_chart' %}">
+                        <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                        <p>Dashboard</p>
+                      </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Procedure' %}">
+                          <i class="fa fa-bars"></i>
+                          <p>Procedures</p>
+                        </a>
+                      </li>
+                     {%if not request.user.is_superuser%}
+                    <li>
+                      <a href="{% url 'UserProfile' %}">
+                        <i class="fa fa-user-o" aria-hidden="true"></i>
+                        <p>User Profile</p>
+                      </a>
+                    </li>
+                    {% endif %}
+
+
+
+                 
+                     
+                      <a href="{% url 'logout' %}">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                        <p>Logout</p>
+                      </a>
+                    </li>
+              </ul>
+
+              {%if request.user.is_superuser%}
+
+
+              <!---Start Sidebar User-->
+              <div class="d-flex align-items-start orlog_book_sidebar">
+                <div class="nav flex-column side_bar_tabs" id="v-pills-tab">
+                  <ul>
+                      <li><a href="{% url 'supervisor' %}"><i class="fa fa-plus"></i>Add Supervisor</a></li>
+                      <li><a href="{% url 'institute' %}"><i class="fa fa-building"></i>Add Institute</a></li>
+                      <li><a href="{% url 'user' %}"><i class="fa fa-user"></i>Add User</a></li>
+                  </ul>  
+                </div>
+              </div>
+              <!-- <div class="user_profile_section">
+                <ul>
+                  <li><a href="{% url 'UserProfile' %}"><i class="fa fa-id-badge"></i>User Profile</a></li>
+              </ul>
+              </div> -->
+             
+               
+                {%endif%}
+
+              <select class="form-select select_box_sidebar fg country" aria-label="Default select example">
+               <!-- main screen -->
+            <option selected>Select Filter</option>
+            <option value="Staff">Staff</option>
+            <option value="Sub-Specialty">Sub-Specialty</option>
+            <option value="Location">Location</option>
+            <option value="Role">Role</option>
+            <option value="PGY">PGY</option>
+              </select>
+
+
+
+              <form method="post" action="">
+                {% csrf_token %}
+              <div class="get_location get_scroll">
+              {% for i in get_location%}
+              <input type="checkbox" id="get_location" name="Location" value='{{i}}'>
+              <label for="vehicle1" class="color_change"> {{i}}</label><br>
+              {%endfor%}
+              <div class="btn_select_sbmt">
+                <input type="submit" value="Submit">
+                </div>
+            </div>
+ 
+                     <div class="sub_specialty get_scroll">
+              {% for i in get_sub_specialty%}
+              <input type="checkbox" id="sub_specialty" name="Sub-Specialty" value='{{i}}'>
+              <label for="vehicle1" class="color_change"> {{i}}</label><br>
+              {%endfor%}
+              <input type="submit" value="Submit"></div>
+            
+
+              <div class="get_role_data get_scroll">
+              {% for i in get_role_data %}
+              <input type="checkbox" id="get_role_data" name="Role" value='{{i}}'>
+              <label for="vehicle1" class="color_change"> {{i}}</label><br>
+              {%endfor%}
+              <input type="submit" value="Submit">
+            </div>
+
+              <div class="get_staff get_scroll">
+              {% for i in get_staff %}
+              <input type="checkbox" id="myCheckBoxID" name="Staff" value='{{i}}'>
+              <label for="vehicle1" class="color_change"> {{i}}</label><br>
+              {%endfor%}
+              <input type="submit" value="Submit">
+            </div>
+           
+          
+
+            
+            <div class="get_pgy get_scroll">
+            
+            {% for i in get_pgy %}
+            
+            <input type="checkbox" id="myCheckBoxID" name="PGY" value={{i}}>
+            
+            <label for="vehicle1" class="color_change"> {{i}}</label><br>
+            
+            {%endfor%}
+            
+            <input type="submit" value="Submit">
+ 
+            </div>     
+            </form><br><br>    
+              <script>
+              
+                $("#myElem").show();
+                setTimeout(function() { $("#myElem").hide(); }, 5000);
+                
+                $('select').on('change', function() {
+                   var get_value = this.value;
+       
+                   if (get_value == 'Role'){
+                    $('.get_role_data').show();
+                    $('.get_location').hide();
+                    $('.sub_specialty').hide();
+                    $('.get_staff').hide();
+                    $('.get_pgy').hide();
+                    
+                  }
+                  if (get_value == 'Location'){
+                    $('.get_location').show();
+                    $('.sub_specialty').hide();
+                    $('.get_staff').hide();
+                    $('.get_role_data').hide();
+                    $('.get_pgy').hide();
+                    
+                  }
+                  if (get_value == 'Staff'){
+                    $('.get_staff').show();
+                    $('.get_location').hide();
+                    $('.sub_specialty').hide();
+                    $('.get_role_data').hide();
+                    $('.get_pgy').hide();
+                  }
+                  if (get_value == 'Sub-Specialty'){
+                    $('.sub_specialty').show();
+                    $('.get_role_data').hide();
+                    $('.get_staff').hide();
+                    $('.get_location').hide();
+                    $('.get_pgy').hide();
+                  }if (get_value == 'PGY'){
+
+                    $('.get_pgy').show();
+                    $('.sub_specialty').hide();
+                    $('.get_role_data').hide();
+                    $('.get_staff').hide();
+                    $('.get_location').hide();
+
+}
+                  });
+                  
+                $('.get_location').hide();
+                $('.sub_specialty').hide();
+                $('.get_role_data').hide();
+                $('.get_staff').hide();
+                $('.get_pgy').hide();
+              </script>
+          </div>
+          </div>
+  
+          <div class="col-lg-10 col-md-12 og_logbook">
+            <div class="edit_profile_bg">
+              <h2>All Employees</h2>
+              <div class="table_content_section">
+               <table class="table">
+                   <thead>
+                     <tr>
+                       <th>Employee ID</th>
+                       <th>First Name</th>
+                       <th>Last Name</th>
+                       <th>Position</th>
+                       <th>Location Name</th>
+                       <th>Location No</th>
+                       <th>Start Date </th>
+                       <th>Length of Service</th>
+                       <th>Action</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>66972</td>
+                       <td>Shane</td>
+                       <td>Allen</td>
+                       <td>Driver</td>
+                       <td>Amozon Coalville DNG</td>
+                       <td>1</td>
+                       <td>16 Oct 2021</td>
+                       <td>8 months, 16 days</td>
+                       <td class="ellipse_icon"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></td>
+                     </tr>
+                   </tbody>
+                 </table>
+              </div>
+           </div> 
+
+               <!---- <div class="main_contain_form remove_user_logbook">
+                  <div class="row user_main_remove">
+                    <div class="col-md-10">
+                    <form method="post">
+                        {% if messages %}
+  
+                    {% for message in messages %}
+                    
+                    <div id="myElem" class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+                    
+                    {% endfor %}
+                    
+                    {% endif %}
+
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <lable>Select user you want to delete:</lable>
+                            <select class="form-select" aria-label="Default select example" name="user_id">
+                                <option selected>Users</option>
+                                {% for u in users %}
+                                <option value="{{u.id}}" name="users" >{{ u.username }}</option>
+                                {% endfor %}
+                               
+                              </select>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group">
+                            <button class="psswrd_btn">Submit</button>
+                        </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>-->
+           </div>
+   
+            <!-- <div class="row mt-4 main-chart-section">
+              <div class="col-md-12">
+                  <div class="bg_main_cntnt">
+                      <div  id="container28">
+                        <table class="table table-bordered month-data" id="month-data">
+                          <thead>
+                              <tr>
+                                  <th>Id</th>
+                                  <th>#</th>
+                                  </tr>
+                          </thead>
+                          <tbody>
+                            {% for key, value in dashboard23.items %}
+                            <tr>
+                                <td>{{key}}</td>
+                                <td>{{value}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                        
+                      </div>
+                </div>
+              </div>
+          </div> -->
+          
+        </div>
+    </div>
+  </div>
+         <!-- Modal -->
+<div class="modal fade main_popup_mdl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body text-center"> 
+            <form form method="POST" enctype="multipart/form-data">
+            
+              {%csrf_token%}
+            <div class="file-upload">
+                <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add File</button>
+              
+                <div class="image-upload-wrap">
+                  <input class="file-upload-input" name="document" id="document" required="required" type='file' onchange="readURL(this);"  />
+                  <div class="drag-text">
+                    <h3>Drag and drop a file or select add Image</h3>
+                  </div>
+                </div>
+                <div class="file-upload-content">
+                  <div class="image-title-wrap">
+                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary sbmt_btn">Submit</button>
+            </form>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+ <script>
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+}
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('.image-upload-wrap').hide();
+
+      $('.file-upload-image').attr('src', e.target.result);
+      $('.file-upload-content').show();
+
+      $('.image-title').html(input.files[0].name);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+
+  } else {
+    removeUpload();
+  }
+}
+
+function removeUpload() {
+  $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+  $('.file-upload-content').hide();
+  $('.image-upload-wrap').show();
+}
+$('.image-upload-wrap').bind('dragover', function () {
+		$('.image-upload-wrap').addClass('image-dropping');
+	});
+	$('.image-upload-wrap').bind('dragleave', function () {
+		$('.image-upload-wrap').removeClass('image-dropping');
+});
+
+
+role_bar = document.getElementById('Role-bar-chart');
+      
+
+        names = {{ names | safe}}
+
+        data_list = {{ final_data_list | safe }}
+
+        // console.log(names)
+        // console.log(data_list)
+    
+
+        role_chart_config = {
+        type: 'horizontalBar',
+        data: {
+            labels : names,
+            datasets:data_list
+        },
+        options: {
+          title: {
+      display: true,
+      text: 'Procedures by Surgeon'
+          },
+          legend: {
+        display: true,
+        position: 'bottom',
+    },
+        scales: {
+            xAxes: [{
+        //       scaleLabel: {
+        //   display: true,
+        //   labelString: 'inches'
+        // },
+              gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            },
+                ticks: {
+                    min: 0 // Edit the value according to what you need
+                },
+              stacked: true
+            }],
+            yAxes: [{
+              gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            },
+                stacked: true
+            }]
+        }
+    }
+    };
+    
+    var myPieChart = new Chart(role_bar, role_chart_config);
+   
+    role_pie = document.getElementById('Role-pie-chart');
+        df = {{ keys | safe}}
+        df1 = {{ values | safe}}
+        role_pie_config = {
+        type: 'pie',
+        data: {
+            datasets: [{
+
+                label: "Role-pie-chart",
+                data: df1,
+                backgroundColor: ["#D8D2CB", "#1A374D", "#398AB9",],
+
+
+                // hoverBackgroundColor: ["#808080", "#808080", "#808080", "#808080", "#808080"],
+
+            }],
+            labels: df,
+        },
+        options: {   
+          title: {
+      display: true,
+      text:'Procedures by Role'
+          },
+         
+          legend: {
+        display: false,
+        position: 'bottom'
+    },
+            responsive: true
+        },
+
+
+    };
+    var myPieChart = new Chart(role_pie, role_pie_config);
+
+    specialty_bar = document.getElementById('specialty-bar-chart');
+        df = {{ keys1 | safe}}
+        df1 = {{ values1 | safe}}
+        specialty_bar_config = {
+
+        type: 'horizontalBar',
+        data: {
+
+            datasets: [{
+                label: "specialty-bar-chart",
+                data: df1,
+                backgroundColor: "#1A374D",
+            }],
+            labels: df,
+            
+        },
+        options: {
+          title: {
+      display: true,
+      text: 'Procedures by Sub-Specialty '
+          },
+          scales: {
+        xAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }   
+        }]
+    },
+          legend: {
+        display: false
+    },
+            responsive: true,
+     
+        },
+
+
+    };
+    var myPieChart = new Chart(specialty_bar, specialty_bar_config);
+    
+            
+    site_bar = document.getElementById('site-bar-chart');
+        df = {{ keys2 | safe}}
+        df1 = {{ values2| safe}}
+        site_bar_config = {
+        type: 'horizontalBar',
+        data: {
+            datasets: [{
+                label: "site-bar-chart",
+                
+                data: df1,
+                backgroundColor: "#1A374D",
+            }],
+            labels: df
+        },
+        options: {
+          title: {
+      display: true,
+      text:'Procedures by Site'
+          },
+          scales: {
+        xAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }   
+        }]},
+          legend: {
+        display: false
+    },
+            responsive: true
+        },
+
+    };
+    var myPieChart = new Chart(site_bar, site_bar_config);
+
+
+    site_bar = document.getElementById('year-to-date-line-chart');
+        df = {{ final_data| safe}}
+        df1 = {{ labels | safe}}
+
+    
+        site_bar_config = {
+        type: 'line',
+        data: df,
+        options: {
+          title: {
+      display: true,
+      text:'Role over Time'
+          },
+          scales: {
+        xAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }
+        }],
+        yAxes: [{
+            gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+            }   
+        }]
+    },
+          legend: {
+        display: false
+    },
+            responsive: true
+        },
+
+    };
+    var myPieChart = new Chart(site_bar, site_bar_config);
+
+    $(document).on('click', 'th', function () {
+            var table = $(this).parents('table').eq(0);
+            var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
+            this.asc = !this.asc;
+            if (!this.asc) {
+                rows = rows.reverse();
+            }
+            table.children('tbody').empty().html(rows);
+        });
+
+        function comparer(index) {
+            return function (a, b) {
+                var valA = getCellValue(a, index),
+                    valB = getCellValue(b, index);
+                return $.isNumeric(valA) && $.isNumeric(valB) ?
+                    valA - valB : valA.localeCompare(valB);
+            };
+        }
+
+        function getCellValue(row, index) {
+            return $(row).children('td').eq(index).text();
+        }
+
+
+    //get dropdown value ajax
+    function get_user(user_id){
+      $.ajax({
+          url: '{% url "generate_bar_chart" %}',
+          type: 'GET',
+          data: {
+              'id': user_id,
+              'is_admin': true
+          },
+          success: function(data) {   
+            console.log("id")                 
+              // generate_bar_chart(data);
+              
+          }
+      });
+    }
+
+</script>
+    
+</body>
+</html>
